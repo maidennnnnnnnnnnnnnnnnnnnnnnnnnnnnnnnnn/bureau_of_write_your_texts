@@ -1,0 +1,57 @@
+<div class="notes-container">
+  <div class="header">
+    <h2>Всі нотатки ({{getNotesCount()}})</h2>
+    <div class="header-buttons">
+      <button routerLink="/add-note" class="btn btn-primary">Додати нотатку</button>
+    </div>
+  </div>
+
+  <!-- Панель управління -->
+  <div class="control-panel">
+    <div class="backup-section">
+      <h3>💾 Резервні копії</h3>
+      <div class="backup-buttons">
+        <button (click)="exportNotes()" class="btn btn-success" [disabled]="getNotesCount() === 0">
+          📥 Скачати backup
+        </button>
+
+        <label for="file-input" class="btn btn-warning file-label">
+          📤 Завантажити backup
+        </label>
+        <input
+          id="file-input"
+          type="file"
+          accept=".json"
+          (change)="onFileSelected($event)"
+          style="display: none;">
+
+        <button (click)="clearAllNotes()" class="btn btn-danger" [disabled]="getNotesCount() === 0">
+          🗑️ Видалити все
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(notes$ | async)?.length === 0" class="no-notes">
+    <p>Поки що немає жодної нотатки. Будьте першим!</p>
+    <button routerLink="/add-note" class="btn btn-primary">Створити першу нотатку</button>
+  </div>
+
+  <div class="notes-grid">
+    <div *ngFor="let note of notes$ | async" class="note-card">
+      <div class="note-header">
+        <h3 class="note-title">{{note.title}}</h3>
+        <button (click)="deleteNote(note.id)" class="btn btn-danger btn-sm">Видалити</button>
+      </div>
+
+      <div class="note-meta">
+        <span class="author">Автор: {{note.author}}</span>
+        <span class="date">{{formatDate(note.createdAt)}}</span>
+      </div>
+
+      <div class="note-content">
+        <p>{{note.content}}</p>
+      </div>
+    </div>
+  </div>
+</div>

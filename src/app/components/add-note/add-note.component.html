@@ -1,0 +1,55 @@
+<div class="add-note-container">
+  <h2>Додати нову нотатку</h2>
+
+  <form [formGroup]="noteForm" (ngSubmit)="onSubmit()" class="note-form">
+    <div class="form-group">
+      <label for="title">Заголовок:</label>
+      <input
+        type="text"
+        id="title"
+        formControlName="title"
+        class="form-control"
+        [class.is-invalid]="noteForm.get('title')?.invalid && noteForm.get('title')?.touched">
+      <div class="char-count">{{titleCharCount}}/{{maxTitleLength}}</div>
+      <div *ngIf="noteForm.get('title')?.invalid && noteForm.get('title')?.touched" class="invalid-feedback">
+        <div *ngIf="noteForm.get('title')?.errors?.['required']">Заголовок обов'язковий</div>
+        <div *ngIf="noteForm.get('title')?.errors?.['maxlength']">Заголовок занадто довгий</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Автор:</label>
+      <input
+        type="text"
+        id="author"
+        formControlName="author"
+        class="form-control"
+        [class.is-invalid]="noteForm.get('author')?.invalid && noteForm.get('author')?.touched">
+      <div class="char-count">{{authorCharCount}}/{{maxAuthorLength}}</div>
+      <div *ngIf="noteForm.get('author')?.invalid && noteForm.get('author')?.touched" class="invalid-feedback">
+        <div *ngIf="noteForm.get('author')?.errors?.['required']">Ім'я автора обов'язкове</div>
+        <div *ngIf="noteForm.get('author')?.errors?.['maxlength']">Ім'я автора занадто довге</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="content">Зміст нотатки:</label>
+      <textarea
+        id="content"
+        formControlName="content"
+        rows="8"
+        class="form-control"
+        [class.is-invalid]="noteForm.get('content')?.invalid && noteForm.get('content')?.touched"></textarea>
+      <div class="char-count">{{contentCharCount}}/{{maxContentLength}}</div>
+      <div *ngIf="noteForm.get('content')?.invalid && noteForm.get('content')?.touched" class="invalid-feedback">
+        <div *ngIf="noteForm.get('content')?.errors?.['required']">Зміст нотатки обов'язковий</div>
+        <div *ngIf="noteForm.get('content')?.errors?.['maxlength']">Зміст нотатки занадто довгий</div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" [disabled]="!noteForm.valid" class="btn btn-primary">Додати нотатку</button>
+      <button type="button" (click)="router.navigate(['/notes'])" class="btn btn-secondary">Скасувати</button>
+    </div>
+  </form>
+</div>
